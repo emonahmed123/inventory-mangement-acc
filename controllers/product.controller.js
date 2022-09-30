@@ -1,19 +1,61 @@
 const Product =require('../models/Product')
 const Data = require('./Data/data.json')
-const{getProductService,createProductService,updateProductBYid,createBulkProductService, bulkUpdateProduct,deletProductBYid,bulkDeletProduct}=require("../service/product.service")
+const{getProductService,createProductService,updateProductBYid,createBulkProductService, bulkUpdateProduct,deletProductBYid,bulkDeletProduct}=require("../service/product.service");
+const { query } = require('express');
+
+
+
+
 exports.getProducts=async(req,res,next)=>{
     try{
     //  const products =  await Proudct.where("name").where("quantity").gt(100).limit(2).sort({quantity:-1})
+         let filters ={...req.query}    
+         const excludeFields=['sort','page','limit']
+         excludeFields.forEach(field=>delete filters[field])
+        // gt ,ltl,gte,lte
 
-    const products =await getProductService()
+        let filtersString= JSON.stringify(filters)
+        filtersString=  filtersString.replace(/\b(gt|gte|lt|lte)\b/g,match=>`$${match}`)
+console.log(filtersString)
+   filters=JSON.parse(filtersString)
+         const queries ={}
+          
+         if (req.query.sort){
+        //  price, quantity
+          const sortBy=req.query.sort.split(',').join(' ')
+         queries.sortBy=sortBy
+          console.log(sortBy)
+         }
+
+         if(req.query.fields){
+          const fields=req.query.fields.split(',').join(' ') 
+          queries.fields=fields;
+         }
+
+
+
+         if(req.query.page){
+        
+          const {page=1,limit=10}=req.query;
+          // 50products
+          //each page 10 product
+          const skip =(page-1)*parseInt(limit);
+          queries.skip=skip;
+          queries.limit=parseInt(limit)
+         }
+     // sort ,page ,limit > exclude
+
+  
+      // console.log('orginal',req.query)
      
+      const products =await getProductService(filters,queries)
      
-     //find({}).select({name:1});
+      //find({}).select({name:1});
      //.limit()
     // name:{$in:["emon","apple"]}
      //quantity:{$gte:100}
      //  $or:[{_id:"631e995dc15defac5bab31e1"},{name:"jkhgkjh"}
-
+    
      res.status(200).json({
         staus:'succes',
         data:products
