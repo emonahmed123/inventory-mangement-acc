@@ -1,5 +1,5 @@
 const Product =require('../models/Product')
-const Data = require('./Data/data.json')
+// const Data = require('./Data/data.json')
 const{getProductService,createProductService,updateProductBYid,createBulkProductService, bulkUpdateProduct,deletProductBYid,bulkDeletProduct}=require("../service/product.service");
 const { query } = require('express');
 
@@ -8,17 +8,18 @@ const { query } = require('express');
 
 exports.getProducts=async(req,res,next)=>{
     try{
-    //  const products =  await Proudct.where("name").where("quantity").gt(100).limit(2).sort({quantity:-1})
+    //  cons t products =  await Proudct.where("name").where("quantity").gt(100).limit(2).sort({quantity:-1})
          let filters ={...req.query}    
+         const queries ={}
          const excludeFields=['sort','page','limit']
          excludeFields.forEach(field=>delete filters[field])
         // gt ,ltl,gte,lte
 
         let filtersString= JSON.stringify(filters)
         filtersString=  filtersString.replace(/\b(gt|gte|lt|lte)\b/g,match=>`$${match}`)
-console.log(filtersString)
-   filters=JSON.parse(filtersString)
-         const queries ={}
+        // console.log(filtersString)
+       filters=JSON.parse(filtersString)
+        
           
          if (req.query.sort){
         //  price, quantity

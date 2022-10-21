@@ -9,7 +9,7 @@ exports.getProductService= async(filters,queries,)=>{
 
     const totalProduct=await Product.countDocuments(filters)
     const pageCount=Math.ceil(totalProduct/queries.limit)
-   return {products ,totalProduct,pageCount};
+    return {products ,totalProduct,pageCount};
 }
 
 exports.createProductService =async(data)=>{

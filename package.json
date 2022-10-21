@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "node":"node server.js ",
-    "node-dev":"nodemon server.js ",
+    "node": "node server.js ",
+    "node-dev": "nodemon server.js ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,6 +17,7 @@
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "mongoose": "^6.6.0",
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "validator": "^13.7.0"
   }
 }
