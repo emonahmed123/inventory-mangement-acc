@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-
+const {ObjectId}=mongoose.Schema.Types;
 const productSchema = mongoose.Schema({
     name: {
       type: String,
@@ -39,7 +39,7 @@ const productSchema = mongoose.Schema({
           value.forEach(url=>{
    
             if(!validator.isURl(url)){
-              isValid =flase
+              isValid = flase
             }
 
           })
@@ -48,10 +48,16 @@ const productSchema = mongoose.Schema({
         massage:"please provid valid image urls"
       }
     }],
-    brand:{
-     type:String,
-     ref:"Brand",
-     require:true,
+    brand: {
+      name: {
+        type: String,
+        required: true,
+      },
+      id: {
+        type: ObjectId,
+        ref: "Brand",
+        required: true,
+      }
     }
     // quantity: {
     //   type: Number,

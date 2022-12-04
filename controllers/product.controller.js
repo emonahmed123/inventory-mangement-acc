@@ -1,7 +1,7 @@
 const Product =require('../models/Product')
 // const Data = require('./Data/data.json')
 const{getProductService,createProductService,updateProductBYid,createBulkProductService, bulkUpdateProduct,deletProductBYid,bulkDeletProduct}=require("../service/product.service");
-const { query } = require('express');
+
 
 
 
@@ -97,7 +97,7 @@ exports.CreateProduct= async(req,res,next)=>{
 
  try{
   const result =await  createProductService(req.body)
-  result.logger()
+  
   res.status(200).json({
     staus:{success:true},
     message:'Product insert ',
@@ -229,3 +229,12 @@ exports.bulkDelete=async(req,res,next)=>{
   }
  }
 
+
+ exports.fileUpload= async(req,res)=>{
+   try {
+res.status(200).json(req.file)
+   }
+ catch(error){
+  
+ }
+ }

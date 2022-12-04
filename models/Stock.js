@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const { ObjectId } = mongoose.Schema.Types
+const validator=require("validator")
 const stockSchema = mongoose.Schema({
     productId: {
         type: ObjectId,
@@ -10,7 +11,6 @@ const stockSchema = mongoose.Schema({
         type: String,
         required: [true, "Please provide a name for this product."],
         trim: true,
-        unique: [true, "Name must be unique"],
         minLength: [3, "Name must be at least 3 characters."],
         maxLenght: [100, "Name is too large"],
     },
@@ -30,24 +30,7 @@ const stockSchema = mongoose.Schema({
     imageURLs: [{
         type: String,
         require: true,
-        validate: {
-            validator: (value) => {
-
-                if (Array.isArray(value)) {
-                    return false;
-                }
-                let isValid = true
-                value.forEach(url => {
-
-                    if (!validator.isURl(url)) {
-                        isValid = flase
-                    }
-
-                })
-                return isValid
-            },
-            massage: "please provid valid image urls"
-        }
+        validate:[validator.isURL,"Please provide vaild url"]
     }],
     brand: {
         type: String,
@@ -113,24 +96,31 @@ const stockSchema = mongoose.Schema({
             type:ObjectId,
             ref:"Spplier"
         }
-    }
+    },
+    
+         sellCount:{
+            type:Number,
+            default:0,
+            min:0
+         }
+    
 
 
 }, {
     timestamps: true,
 })
 // mongoose middlewares for saving data:pre/post;
-productSchema.pre('save',function(next){
-    console.log('Before saving data')
-    if(this.quantity==0){
-        this.status='out-of-stock'
-      }
-    next()
-})
-productSchema.post('save',function(doc,next){
-    console.log('affter saving data')
-    next()
-})
+// productSchema.pre('save',function(next){
+//     console.log('Before saving data')
+//     if(this.quantity==0){
+//         this.status='out-of-stock'
+//       }
+//     next()
+// })
+// productSchema.post('save',function(doc,next){
+//     console.log('affter saving data')
+//     next()
+// })
 
 const Stock = mongoose.model('Stock', stockSchema)
 

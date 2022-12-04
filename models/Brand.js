@@ -1,6 +1,7 @@
 const mongoose= require("mongoose");
 const validator=require("validator")
 const {ObjectId}=mongoose.Schema.Types;
+
 const brandSchema=mongoose.Schema({
     products: [{
         type: ObjectId,
@@ -37,8 +38,7 @@ const brandSchema=mongoose.Schema({
     
 
  suppliers:[{
-    name:String,
-    contactNumber:String,
+
     id:{
         type:ObjectId,
         ref:"supplier"

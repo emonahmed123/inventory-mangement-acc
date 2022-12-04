@@ -1,4 +1,6 @@
 const Product =require('../models/Product')
+const Brand =require('../models/Brand')
+
 
 exports.getProductService= async(filters,queries,)=>{
     const products= await Product.find(filters)
@@ -14,6 +16,17 @@ exports.getProductService= async(filters,queries,)=>{
 
 exports.createProductService =async(data)=>{
     const product= await Product.create(data)
+     const {_id:productId,brand}=product
+
+ const res =   await Brand.updateOne({
+        _id:brand.id},
+        {
+            $push:{products:productId}
+    
+    
+    }
+     )
+     console.log(res.nModifided)
     return product;
 }
 
